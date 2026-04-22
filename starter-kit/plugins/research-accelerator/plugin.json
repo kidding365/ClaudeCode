@@ -1,0 +1,29 @@
+{
+  "name": "research-accelerator",
+  "version": "0.1.0",
+  "description": "Short: Plugin for research tunneling, parallel execution planning, and token-efficient answer formatting.",
+  "author": {
+    "name": "Starter Kit",
+    "url": "https://example.com"
+  },
+  "keywords": [
+    "research",
+    "parallelization",
+    "skills",
+    "mcp",
+    "prompting"
+  ],
+  "commands": {
+    "research-plan": {
+      "source": "./commands/research-plan.md",
+      "description": "Create a bounded research plan with measurable checkpoints",
+      "allowedTools": ["Read", "Grep", "Glob", "Task"]
+    }
+  },
+  "agents": [
+    "./agents/research-orchestrator.md"
+  ],
+  "outputStyles": [
+    "./output-styles/lean-technical.md"
+  ]
+}

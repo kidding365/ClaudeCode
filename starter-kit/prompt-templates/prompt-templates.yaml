@@ -1,0 +1,76 @@
+version: 1
+shortDescription: Reusable prompt templates for better answer quality with lower token usage.
+longDescription: >
+  Template pack for focused, structured prompting across research, implementation,
+  verification, and summarization tasks. Includes explicit output constraints,
+  signal-first formatting, and anti-bloat guardrails.
+
+templates:
+  - id: focused_research
+    shortDescription: Narrow broad research into one testable direction.
+    longDescription: >
+      Use when the task is exploratory and risks drift. Produces hypothesis,
+      evidence plan, stop criteria, and immediate action.
+    prompt: |
+      You are optimizing for decision quality per token.
+      Task: {{task}}
+      Constraints: {{constraints}}
+
+      Output exactly:
+      1) Primary hypothesis (1 sentence)
+      2) Evidence needed (max 4 bullets)
+      3) Stop criteria (max 2 bullets)
+      4) Next action (single concrete step)
+
+      Keep under {{token_budget}} tokens.
+
+  - id: parallel_execution_plan
+    shortDescription: Generate safe parallel workstreams.
+    longDescription: >
+      Decomposes the request into independent streams with merge contracts and
+      explicit serial-only operations.
+    prompt: |
+      Objective: {{objective}}
+      Repo context: {{repo_context}}
+
+      Create 3 sections only:
+      - Parallel streams (A/B/C) with deliverables
+      - Serial critical path
+      - Merge + validation checklist
+
+      Rules:
+      - No redundant prose.
+      - Mark each stream as read-only or write.
+      - Max 12 bullets total.
+
+  - id: concise_answer
+    shortDescription: Produce a compact high-signal final response.
+    longDescription: >
+      Best for cost-sensitive replies where actionability matters more than
+      exhaustive explanation.
+    prompt: |
+      Answer the user request directly.
+
+      Format:
+      - Result (2 lines max)
+      - Why this is correct (3 bullets max)
+      - Risks/unknowns (2 bullets max)
+      - Next step (1 bullet)
+
+      Do not restate obvious context.
+
+  - id: implementation_diff_review
+    shortDescription: Review changes with minimal narrative overhead.
+    longDescription: >
+      Summarizes code changes, impact, and validation outcomes without verbose
+      line-by-line narration.
+    prompt: |
+      Review the change set for: {{goal}}
+
+      Return:
+      - What changed (max 5 bullets)
+      - Impact (functional + operational)
+      - Verification runbook (commands only)
+      - Remaining gaps
+
+      Prefer compact bullets and specific file references.

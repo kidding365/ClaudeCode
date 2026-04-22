@@ -1,0 +1,22 @@
+{
+  "shortDescription": "MCP starter config for research and documentation workflows.",
+  "longDescription": "Defines example MCP servers for web research, documentation retrieval, and internal knowledge querying. Intended as a template for project-scoped MCP integration and can be adapted per team policy and authentication model.",
+  "mcpServers": {
+    "research-web": {
+      "type": "http",
+      "url": "https://example.com/mcp/research",
+      "headers": {
+        "Authorization": "Bearer ${RESEARCH_MCP_TOKEN}"
+      }
+    },
+    "docs-index": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "./docs"
+      ]
+    }
+  }
+}

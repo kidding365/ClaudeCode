@@ -1,0 +1,403 @@
+{
+  "mcpBundleVersion": "1.0.0",
+  "name": "claude-code-enhancement-mcp",
+  "displayName": "Claude Code Enhancement MCP",
+  "description": "Model Context Protocol servers for extending Claude Code with research, parallelization, documentation, and automation capabilities",
+  "version": "1.0.0",
+  "publisher": "Claude Code Enhancement Framework",
+  "license": "MIT",
+  "homepage": "https://github.com/anthropics/claude-code",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anthropics/claude-code.git"
+  },
+  "categories": [
+    "productivity",
+    "development",
+    "research",
+    "automation"
+  ],
+  "engines": {
+    "claude-code": ">=2.0.0"
+  },
+  "mcpServers": [
+    {
+      "name": "research-coordinator-mcp",
+      "displayName": "Research Coordinator MCP",
+      "description": "Coordinates multi-agent research workflows with specialized workers for literature review, data analysis, and hypothesis validation",
+      "command": "node",
+      "args": ["${bundlePath}/servers/research-coordinator.js"],
+      "env": {},
+      "capabilities": [
+        "tools",
+        "resources",
+        "prompts"
+      ],
+      "tools": [
+        {
+          "name": "spawn_research_worker",
+          "description": "Spawn a specialized research worker agent",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "workerType": {
+                "type": "string",
+                "enum": ["literature_reviewer", "data_analyst", "hypothesis_generator", "validator"],
+                "description": "Type of research worker to spawn"
+              },
+              "task": {
+                "type": "string",
+                "description": "Specific task for the worker"
+              },
+              "context": {
+                "type": "object",
+                "description": "Additional context for the worker"
+              }
+            },
+            "required": ["workerType", "task"]
+          }
+        },
+        {
+          "name": "collect_research_results",
+          "description": "Collect and synthesize results from all research workers",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "sessionId": {
+                "type": "string",
+                "description": "Research session identifier"
+              },
+              "format": {
+                "type": "string",
+                "enum": ["markdown", "json", "citation"],
+                "description": "Output format for results"
+              }
+            },
+            "required": ["sessionId"]
+          }
+        },
+        {
+          "name": "validate_hypothesis",
+          "description": "Validate a hypothesis against collected evidence",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "hypothesis": {
+                "type": "string",
+                "description": "Hypothesis to validate"
+              },
+              "evidenceIds": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "IDs of evidence to check against"
+              },
+              "confidenceThreshold": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Minimum confidence level required"
+              }
+            },
+            "required": ["hypothesis"]
+          }
+        }
+      ],
+      "resources": [
+        {
+          "uri": "research://sessions/{sessionId}",
+          "name": "Research Session",
+          "description": "Access research session data and results",
+          "mimeType": "application/json"
+        },
+        {
+          "uri": "research://evidence/{evidenceId}",
+          "name": "Evidence Item",
+          "description": "Access individual evidence items",
+          "mimeType": "application/json"
+        }
+      ]
+    },
+    {
+      "name": "parallel-executor-mcp",
+      "displayName": "Parallel Executor MCP",
+      "description": "Execute tasks in parallel with coordination, monitoring, and result aggregation",
+      "command": "node",
+      "args": ["${bundlePath}/servers/parallel-executor.js"],
+      "env": {},
+      "capabilities": ["tools", "resources"],
+      "tools": [
+        {
+          "name": "create_parallel_task",
+          "description": "Create a parallel execution task with multiple workers",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "enum": ["map-reduce", "pipeline", "fan-out", "monitor-execute"],
+                "description": "Parallelization pattern to use"
+              },
+              "workers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {"type": "string"},
+                    "task": {"type": "string"},
+                    "dependencies": {"type": "array", "items": {"type": "string"}}
+                  }
+                },
+                "description": "List of worker tasks"
+              },
+              "aggregationStrategy": {
+                "type": "string",
+                "enum": ["concat", "merge", "reduce", "custom"],
+                "description": "How to aggregate results"
+              }
+            },
+            "required": ["pattern", "workers"]
+          }
+        },
+        {
+          "name": "monitor_task_progress",
+          "description": "Monitor progress of parallel tasks",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "taskId": {
+                "type": "string",
+                "description": "Task ID to monitor"
+              },
+              "includeMetrics": {
+                "type": "boolean",
+                "description": "Include performance metrics"
+              }
+            },
+            "required": ["taskId"]
+          }
+        },
+        {
+          "name": "aggregate_results",
+          "description": "Aggregate results from completed workers",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "taskId": {"type": "string"},
+              "strategy": {"type": "string"},
+              "conflictResolution": {
+                "type": "string",
+                "enum": ["last-wins", "first-wins", "merge", "custom"]
+              }
+            },
+            "required": ["taskId"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "documentation-generator-mcp",
+      "displayName": "Documentation Generator MCP",
+      "description": "Automatically generate and maintain project documentation",
+      "command": "node",
+      "args": ["${bundlePath}/servers/documentation-generator.js"],
+      "env": {},
+      "capabilities": ["tools", "resources"],
+      "tools": [
+        {
+          "name": "generate_api_docs",
+          "description": "Generate API documentation from source code",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "sourcePaths": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "Paths to source files"
+              },
+              "outputFormat": {
+                "type": "string",
+                "enum": ["markdown", "html", "json"],
+                "description": "Output format"
+              },
+              "includeExamples": {
+                "type": "boolean",
+                "description": "Include code examples"
+              }
+            },
+            "required": ["sourcePaths"]
+          }
+        },
+        {
+          "name": "update_readme",
+          "description": "Update README.md with current project state",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "sections": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "Sections to update"
+              },
+              "preserveCustom": {
+                "type": "boolean",
+                "description": "Preserve custom sections"
+              }
+            }
+          }
+        },
+        {
+          "name": "generate_changelog",
+          "description": "Generate changelog from git history",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "fromVersion": {"type": "string"},
+              "toVersion": {"type": "string"},
+              "conventionalCommits": {"type": "boolean"}
+            }
+          }
+        },
+        {
+          "name": "create_adr",
+          "description": "Create an Architecture Decision Record",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "title": {"type": "string"},
+              "status": {
+                "type": "string",
+                "enum": ["proposed", "accepted", "deprecated", "superseded"]
+              },
+              "context": {"type": "string"},
+              "decision": {"type": "string"},
+              "consequences": {"type": "string"}
+            },
+            "required": ["title", "decision"]
+          }
+        },
+        {
+          "name": "validate_documentation",
+          "description": "Validate documentation completeness and accuracy",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "checkCoverage": {"type": "boolean"},
+              "checkLinks": {"type": "boolean"},
+              "checkExamples": {"type": "boolean"}
+            }
+          }
+        }
+      ],
+      "resources": [
+        {
+          "uri": "docs://coverage/report",
+          "name": "Documentation Coverage Report",
+          "description": "Current documentation coverage metrics",
+          "mimeType": "application/json"
+        }
+      ]
+    },
+    {
+      "name": "prompt-enhancer-mcp",
+      "displayName": "Prompt Enhancer MCP",
+      "description": "Enhance prompts with domain context, validation, and optimization",
+      "command": "node",
+      "args": ["${bundlePath}/servers/prompt-enhancer.js"],
+      "env": {},
+      "capabilities": ["tools", "prompts"],
+      "tools": [
+        {
+          "name": "enhance_prompt",
+          "description": "Enhance a prompt with domain context and best practices",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "prompt": {"type": "string"},
+              "domain": {"type": "string"},
+              "addConstraints": {"type": "boolean"},
+              "addExamples": {"type": "boolean"}
+            },
+            "required": ["prompt"]
+          }
+        },
+        {
+          "name": "inject_context",
+          "description": "Inject relevant context into a prompt",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "prompt": {"type": "string"},
+              "contextSources": {
+                "type": "array",
+                "items": {"type": "string"}
+              },
+              "maxContextLength": {"type": "integer"}
+            },
+            "required": ["prompt", "contextSources"]
+          }
+        },
+        {
+          "name": "validate_output",
+          "description": "Validate model output against schema or rules",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "output": {"type": "string"},
+              "schema": {"type": "object"},
+              "rules": {"type": "array", "items": {"type": "string"}}
+            },
+            "required": ["output"]
+          }
+        },
+        {
+          "name": "optimize_for_model",
+          "description": "Optimize prompt for specific model characteristics",
+          "inputSchema": {
+            "type": "object",
+            "properties": {
+              "prompt": {"type": "string"},
+              "modelName": {"type": "string"},
+              "optimizeFor": {
+                "type": "string",
+                "enum": ["accuracy", "speed", "cost", "creativity"]
+              }
+            },
+            "required": ["prompt", "modelName"]
+          }
+        }
+      ],
+      "prompts": [
+        {
+          "name": "code-review-prompt",
+          "description": "Optimized prompt for code review tasks",
+          "arguments": [
+            {"name": "language", "description": "Programming language", "required": false},
+            {"name": "focus", "description": "Review focus area", "required": false}
+          ]
+        },
+        {
+          "name": "debugging-prompt",
+          "description": "Systematic debugging prompt template",
+          "arguments": [
+            {"name": "symptoms", "description": "Observed symptoms", "required": true},
+            {"name": "environment", "description": "Runtime environment", "required": false}
+          ]
+        }
+      ]
+    }
+  ],
+  "activationEvents": [
+    "onCommand:research",
+    "onCommand:parallel",
+    "onCommand:docs",
+    "onCommand:optimize"
+  ],
+  "contributes": {
+    "commands": [
+      {"command": "research.start", "title": "Start Research Session"},
+      {"command": "parallel.execute", "title": "Execute Parallel Tasks"},
+      {"command": "docs.generate", "title": "Generate Documentation"},
+      {"command": "prompt.enhance", "title": "Enhance Prompt"}
+    ]
+  }
+}

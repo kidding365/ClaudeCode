@@ -1,0 +1,359 @@
+{
+  "dxtVersion": "1.0.0",
+  "name": "claude-code-enhancement-suite",
+  "displayName": "Claude Code Enhancement Suite",
+  "description": "Complete enhancement suite for Claude Code with skills, MCP servers, hooks, and automation tools for research, parallelization, documentation, and prompt optimization",
+  "version": "1.0.0",
+  "publisher": "Claude Code Enhancement Framework",
+  "author": {
+    "name": "Claude Code Enhancement Framework",
+    "email": "enhancements@claude.dev"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/anthropics/claude-code",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anthropics/claude-code.git",
+    "directory": "outfiles/extensions"
+  },
+  "bugs": {
+    "url": "https://github.com/anthropics/claude-code/issues"
+  },
+  "keywords": [
+    "claude-code",
+    "productivity",
+    "research",
+    "parallelization",
+    "documentation",
+    "automation",
+    "mcp",
+    "skills",
+    "hooks"
+  ],
+  "categories": [
+    "productivity",
+    "development-tools",
+    "automation",
+    "research"
+  ],
+  "engines": {
+    "claude-code": ">=2.0.0"
+  },
+  "icon": "icon.png",
+  "galleryBanner": {
+    "color": "#D97757",
+    "theme": "dark"
+  },
+  "components": {
+    "skills": [
+      {
+        "name": "Research Coordinator",
+        "file": "../skills/research-coordinator.md",
+        "enabled": true,
+        "autoLoad": true
+      },
+      {
+        "name": "Parallel Executor",
+        "file": "../skills/parallel-executor.md",
+        "enabled": true,
+        "autoLoad": true
+      },
+      {
+        "name": "Documentation Generator",
+        "file": "../skills/documentation-generator.md",
+        "enabled": true,
+        "autoLoad": true
+      },
+      {
+        "name": "Code Reviewer",
+        "file": "../skills/code-reviewer.md",
+        "enabled": true,
+        "autoLoad": true
+      },
+      {
+        "name": "Refactoring Assistant",
+        "file": "../skills/refactoring-assistant.md",
+        "enabled": true,
+        "autoLoad": true
+      },
+      {
+        "name": "Test Generator",
+        "file": "../skills/test-generator.md",
+        "enabled": true,
+        "autoLoad": true
+      },
+      {
+        "name": "Debug Assistant",
+        "file": "../skills/debug-assistant.md",
+        "enabled": true,
+        "autoLoad": true
+      },
+      {
+        "name": "Security Auditor",
+        "file": "../skills/security-auditor.md",
+        "enabled": true,
+        "autoLoad": true
+      },
+      {
+        "name": "Performance Optimizer",
+        "file": "../skills/performance-optimizer.md",
+        "enabled": true,
+        "autoLoad": true
+      },
+      {
+        "name": "Migration Assistant",
+        "file": "../skills/migration-assistant.md",
+        "enabled": true,
+        "autoLoad": true
+      },
+      {
+        "name": "Architecture Designer",
+        "file": "../skills/architecture-designer.md",
+        "enabled": true,
+        "autoLoad": true
+      }
+    ],
+    "mcpServers": [
+      {
+        "name": "research-coordinator-mcp",
+        "file": "./claude-code-enhancement.mcpb",
+        "serverId": "research-coordinator-mcp",
+        "autoStart": false,
+        "config": {}
+      },
+      {
+        "name": "parallel-executor-mcp",
+        "file": "./claude-code-enhancement.mcpb",
+        "serverId": "parallel-executor-mcp",
+        "autoStart": false,
+        "config": {}
+      },
+      {
+        "name": "documentation-generator-mcp",
+        "file": "./claude-code-enhancement.mcpb",
+        "serverId": "documentation-generator-mcp",
+        "autoStart": false,
+        "config": {}
+      },
+      {
+        "name": "prompt-enhancer-mcp",
+        "file": "./claude-code-enhancement.mcpb",
+        "serverId": "prompt-enhancer-mcp",
+        "autoStart": false,
+        "config": {}
+      }
+    ],
+    "hooks": [
+      {
+        "name": "pre-sampling-enhancer",
+        "type": "pre_sampling",
+        "description": "Enhances prompts before sampling with domain context",
+        "script": "hooks/pre-sampling-enhancer.js",
+        "enabled": true,
+        "config": {
+          "addDomainContext": true,
+          "injectExamples": true,
+          "optimizeForModel": true
+        }
+      },
+      {
+        "name": "post-sampling-validator",
+        "type": "post_sampling",
+        "description": "Validates model output against schemas and rules",
+        "script": "hooks/post-sampling-validator.js",
+        "enabled": true,
+        "config": {
+          "validateJson": true,
+          "checkCitations": true,
+          "enforceStructure": true
+        }
+      },
+      {
+        "name": "pre-commit-docs",
+        "type": "pre_commit",
+        "description": "Auto-generates documentation before commits",
+        "script": "hooks/pre-commit-docs.js",
+        "enabled": false,
+        "config": {
+          "updateReadme": true,
+          "generateApiDocs": true,
+          "updateChangelog": true
+        }
+      },
+      {
+        "name": "post-task-analyzer",
+        "type": "post_task",
+        "description": "Analyzes completed tasks for improvements",
+        "script": "hooks/post-task-analyzer.js",
+        "enabled": true,
+        "config": {
+          "trackMetrics": true,
+          "suggestOptimizations": true
+        }
+      }
+    ],
+    "commands": [
+      {
+        "name": "research",
+        "description": "Start a multi-agent research session",
+        "handler": "commands/research.js",
+        "aliases": ["/research", "/study"]
+      },
+      {
+        "name": "parallel",
+        "description": "Execute tasks in parallel",
+        "handler": "commands/parallel.js",
+        "aliases": ["/parallel", "/swarm"]
+      },
+      {
+        "name": "docs",
+        "description": "Generate or update documentation",
+        "handler": "commands/docs.js",
+        "aliases": ["/docs", "/document"]
+      },
+      {
+        "name": "review",
+        "description": "Review code for issues",
+        "handler": "commands/review.js",
+        "aliases": ["/review", "/audit"]
+      },
+      {
+        "name": "optimize",
+        "description": "Optimize code performance",
+        "handler": "commands/optimize.js",
+        "aliases": ["/optimize", "/perf"]
+      }
+    ],
+    "outputStyles": [
+      {
+        "name": "research-report",
+        "description": "Structured research report format",
+        "template": "styles/research-report.hbs"
+      },
+      {
+        "name": "code-review",
+        "description": "Code review report format",
+        "template": "styles/code-review.hbs"
+      },
+      {
+        "name": "api-documentation",
+        "description": "API documentation format",
+        "template": "styles/api-docs.hbs"
+      },
+      {
+        "name": "architecture-decision",
+        "description": "ADR format",
+        "template": "styles/adr.hbs"
+      }
+    ]
+  },
+  "configuration": {
+    "title": "Claude Code Enhancement Suite",
+    "properties": {
+      "enhancement.research.defaultWorkers": {
+        "type": "array",
+        "default": ["literature_reviewer", "data_analyst"],
+        "description": "Default worker types for research sessions"
+      },
+      "enhancement.parallel.maxConcurrent": {
+        "type": "integer",
+        "default": 5,
+        "minimum": 1,
+        "maximum": 20,
+        "description": "Maximum concurrent parallel tasks"
+      },
+      "enhancement.documentation.autoUpdate": {
+        "type": "boolean",
+        "default": false,
+        "description": "Automatically update documentation on code changes"
+      },
+      "enhancement.hooks.enablePreSampling": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable pre-sampling prompt enhancement"
+      },
+      "enhancement.hooks.enablePostSampling": {
+        "type": "boolean",
+        "default": true,
+        "description": "Enable post-sampling output validation"
+      },
+      "enhancement.models.preferredModel": {
+        "type": "string",
+        "default": "claude-sonnet-4-20250514",
+        "enum": [
+          "claude-sonnet-4-20250514",
+          "claude-opus-4-20250514",
+          "claude-haiku-4-20250514"
+        ],
+        "description": "Preferred model for enhancement tasks"
+      }
+    }
+  },
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:research",
+    "onCommand:parallel",
+    "onCommand:docs",
+    "onCommand:review",
+    "onCommand:optimize"
+  ],
+  "scripts": {
+    "install": "node scripts/install.js",
+    "postinstall": "node scripts/postinstall.js",
+    "uninstall": "node scripts/uninstall.js"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "peerDependencies": {
+    "claude-code": ">=2.0.0"
+  },
+  "changelog": {
+    "1.0.0": [
+      "Initial release of Claude Code Enhancement Suite",
+      "Added 11 specialized skills for various development tasks",
+      "Integrated 4 MCP servers for extended capabilities",
+      "Implemented 4 automation hooks",
+      "Added 5 slash commands",
+      "Included 4 output style templates"
+    ]
+  },
+  "readme": {
+    "shortDescription": "Enhance Claude Code with research coordination, parallel execution, auto-documentation, and prompt optimization",
+    "features": [
+      "🔬 **Research Coordination**: Multi-agent research with specialized workers",
+      "⚡ **Parallel Execution**: Run tasks concurrently with multiple patterns",
+      "📚 **Auto Documentation**: Generate API docs, READMEs, changelogs automatically",
+      "🔍 **Code Review**: Comprehensive security and quality audits",
+      "🛠️ **Refactoring**: Safe, incremental code improvements",
+      "✅ **Test Generation**: Automatic unit, integration, and E2E tests",
+      "🐛 **Debug Assistant**: Systematic bug diagnosis and fixes",
+      "🔒 **Security Audit**: OWASP compliance and vulnerability scanning",
+      "⚙️ **Performance**: Bottleneck identification and optimization",
+      "🔄 **Migration**: Safe framework/language migrations",
+      "🏗️ **Architecture**: System design and tech stack recommendations"
+    ],
+    "quickStart": [
+      "1. Install the extension: `claude extension install claude-code-enhancement-suite`",
+      "2. Enable desired skills: `/skill enable <skill-name>`",
+      "3. Configure MCP servers: `claude mcp add <server> <command>`",
+      "4. Start using commands: `/research`, `/parallel`, `/docs`, etc."
+    ],
+    "examples": [
+      {
+        "title": "Research Session",
+        "command": "/research What are the latest developments in quantum error correction?",
+        "description": "Spawns literature reviewer and data analyst workers"
+      },
+      {
+        "title": "Parallel Testing",
+        "command": "/parallel Run all test suites in parallel with coverage reporting",
+        "description": "Executes tests concurrently and aggregates results"
+      },
+      {
+        "title": "Auto Documentation",
+        "command": "/docs Generate API documentation for the entire project",
+        "description": "Scans source files and creates comprehensive docs"
+      }
+    ]
+  }
+}
